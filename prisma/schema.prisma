@@ -14,5 +14,6 @@ datasource db {
 }
 
 model Board {
-  id String @id @default(uuid())
+  id    String @id @default(uuid())
+  title String
 }
