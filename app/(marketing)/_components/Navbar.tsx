@@ -6,9 +6,9 @@ import React from "react";
 const Navbar = () => {
   return (
     <div className="fixed top-0 w-full p-4 border-b shadow-sm flex items-center bg-white">
-      <div className="md:max-w-screen-2xl mx-auto flex items-center w-full justify-between">
+      <div className="md:max-w-screen-2xl mx-auto flex items-center w-full">
         <Logo />
-        <div className="space-x-4 md:block md:w-auto flex items-center justify-between w-full">
+        <div className="space-x-4 md:block md:w-auto flex items-center grow justify-end w-full">
           <Button size={"sm"} asChild variant={"outline"}>
             <Link href={"/sign-in"}>Login</Link>
           </Button>
