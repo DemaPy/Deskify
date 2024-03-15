@@ -51,7 +51,7 @@ const NavItem = ({
     },
     {
       label: "Billing",
-      icon: <Settings className="h-4 w-4 mr-2" />,
+      icon: <CreditCard className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/billing`,
     },
   ];
@@ -83,6 +83,7 @@ const NavItem = ({
       <AccordionContent className="pt-2 text-neutral-700">
         {routes.map((r) => (
           <Button
+            onClick={() => onClick(r.href)}
             variant={"ghost"}
             className={cn(
               "w-full font-normal justify-start pl-10 mb-1",
