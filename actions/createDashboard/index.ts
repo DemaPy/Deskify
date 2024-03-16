@@ -8,11 +8,28 @@ import { createSafeAction } from "@/lib/createSafeAction";
 import { CreateBoard } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth();
+  const { userId, orgId } = auth();
 
-  if (!userId) {
+  if (!userId || !orgId) {
     return {
       error: "Unauthorized",
+    };
+  }
+
+  const { title, image } = data;
+
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHtml, imageUserName] =
+    image.split("|");
+
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageLinkHtml ||
+    !imageUserName
+  ) {
+    return {
+      error: "Failed to create board.",
     };
   }
 
@@ -20,7 +37,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   try {
     board = await db.board.create({
       data: {
-        title: data.title,
+        title: title,
+        imageId,
+        imageFullUrl,
+        imageLinkHtml,
+        imageThumbUrl,
+        imageUserName,
+        orgId,
       },
     });
     revalidatePath(`/board/${board.id}`);

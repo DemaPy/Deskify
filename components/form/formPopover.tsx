@@ -13,6 +13,7 @@ import { X } from "lucide-react";
 import FormInput from "./FormInput";
 import FormButton from "@/hooks/FormButton";
 import { toast } from "sonner";
+import FormPicker from "./formPicker";
 
 type TFormPopover = {
   children: ReactNode;
@@ -33,7 +34,8 @@ const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
-    execute({ title });
+    const image = formData.get("image") as string;
+    execute({ title, image });
   };
 
   return (
@@ -45,7 +47,7 @@ const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
         side={side}
         sideOffset={sideOffset}
       >
-        <div className="text-sm font-medium text-center text-neutral-600">
+        <div className="text-sm font-medium text-center text-neutral-600 mb-4">
           Create board
         </div>
         <PopoverClose asChild>
@@ -59,6 +61,7 @@ const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
+            <FormPicker id="image" errors={fieldErrors} />
             <FormInput
               id="title"
               label="Board title"
