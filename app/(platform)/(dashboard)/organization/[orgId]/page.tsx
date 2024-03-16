@@ -1,5 +1,5 @@
-import { create } from "@/actions/create-boards";
 import { db } from "@/lib/db";
+import Form from "./form";
 
 const OrganizationId = async () => {
   const boards = await db.board.findMany();
@@ -7,15 +7,7 @@ const OrganizationId = async () => {
 
   return (
     <div>
-      <form action={create}>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          placeholder="enter title board"
-          className="border-input border p-2"
-        />
-      </form>
+      <Form />
     </div>
   );
 };
