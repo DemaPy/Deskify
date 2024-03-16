@@ -7,13 +7,14 @@ import {
 } from "../ui/popover";
 import { useAction } from "@/hooks/useAction";
 import { createBoard } from "@/actions/createDashboard";
-import { ReactNode } from "react";
+import { ElementRef, ReactNode, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import FormInput from "./FormInput";
 import FormButton from "@/hooks/FormButton";
 import { toast } from "sonner";
 import FormPicker from "./formPicker";
+import { useRouter } from "next/navigation";
 
 type TFormPopover = {
   children: ReactNode;
@@ -23,9 +24,13 @@ type TFormPopover = {
 };
 
 const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
+  const router = useRouter();
+  const ref = useRef<ElementRef<"button">>(null);
   const { execute, fieldErrors } = useAction(createBoard, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Board created");
+      ref.current?.click();
+      router.push("/board/" + data.id);
     },
     onError: () => {
       toast.error("Board created");
@@ -50,7 +55,7 @@ const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
         <div className="text-sm font-medium text-center text-neutral-600 mb-4">
           Create board
         </div>
-        <PopoverClose asChild>
+        <PopoverClose ref={ref} asChild>
           <Button
             className=" right-2 absolute top-2"
             size={"sm"}
