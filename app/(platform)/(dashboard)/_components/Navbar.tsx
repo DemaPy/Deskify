@@ -8,7 +8,7 @@ import FormPopover from "@/components/form/formPopover";
 
 const Navbar = () => {
   return (
-    <nav className="fixed z-50 top-0 w-full p-4 border-b flex items-center bg-white">
+    <nav className="fixed z-50 top-0 w-full px-4 py-2 border-b flex items-center bg-white">
       <MobileSidebar />
 
       <div className="flex items-center gap-x-4">

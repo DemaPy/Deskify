@@ -46,7 +46,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         orgId,
       },
     });
-    revalidatePath(`/board/${board.id}`);
   } catch (error) {
     if (error instanceof Error) {
       return {
@@ -57,7 +56,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: "Failed to create",
     };
   }
-
+  revalidatePath(`/board/${board.id}`);
   return { data: board };
 };
 

@@ -17,7 +17,7 @@ const FormErrors = ({ id, errors }: FormErrors) => {
       aria-live="polite"
       className="mt-2 text-xs text-rose-500"
     >
-      {errors?.[id].map((err) => {
+      {errors?.[id]?.map((err) => {
         return (
           <div
             key={err}
