@@ -6,6 +6,7 @@ import { useAction } from "@/hooks/useAction";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
+import ListOptions from "./ListOptions";
 
 type TListHeader = {
   title: string;
@@ -57,7 +58,7 @@ const ListHeader = ({ title, boardId, id }: TListHeader) => {
   useEventListener("keydown", onKeyDown);
 
   return (
-    <div className="py-4 px-2 text-sm font-semibold justify-between items-start gap-x-2">
+    <div className="py-2 px-2 text-sm font-semibold justify-between flex items-center gap-x-2">
       {isEditing ? (
         <form
           ref={formref}
@@ -83,6 +84,7 @@ const ListHeader = ({ title, boardId, id }: TListHeader) => {
           {listName}
         </div>
       )}
+      <ListOptions boardId={boardId} id={id} onAddCard={() => {}} />
     </div>
   );
 };

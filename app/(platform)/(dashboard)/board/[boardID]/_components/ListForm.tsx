@@ -30,7 +30,7 @@ const ListForm = () => {
     const title = formData.get("title") as string;
     const boardID = formData.get("boardID") as string;
 
-    execute({ boardId: boardID, title });
+    execute({ boardId: params.boardID as string, title });
   };
 
   const enableEditing = () => {
@@ -67,7 +67,6 @@ const ListForm = () => {
             ref={inputRef}
             placeholder="Enter list title"
           />
-          <input className="hidden" value={params.boardID} name="boardID" />
           <div className="flex items-center gap-x-1">
             <FormButton disabled={isLoading}>Add list</FormButton>
             <Button onClick={disableEditing} variant={"ghost"} size={"sm"}>
