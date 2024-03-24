@@ -1,5 +1,4 @@
-<h1 style="font-weight: 600; font-size: 3rem;">Deskify</h1>
-<p style="font-size: 12px; color: #ececec">Collaborate, manage projects, and reach new productivity peaks.</p>
+# Meet Deskify
 
 ## Marketing page
-![marketing page](image.png)
+![marketing page](https://github.com/DemaPy/Deskify/assets/80632445/f3d45bf5-80cf-4098-9632-cba4a3a18c62)
