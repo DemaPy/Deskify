@@ -3,3 +3,6 @@
 
 ## Marketing page
 ![marketing page](image.png)
+
+## Organization page
+![image](https://github.com/DemaPy/Deskify/assets/80632445/6a72252d-408e-4a10-903b-df8979178e3d)
