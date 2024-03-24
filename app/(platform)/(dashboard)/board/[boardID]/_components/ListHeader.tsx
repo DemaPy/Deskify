@@ -12,9 +12,10 @@ type TListHeader = {
   title: string;
   id: string;
   boardId: string;
+  onAddCard: () => void
 };
 
-const ListHeader = ({ title, boardId, id }: TListHeader) => {
+const ListHeader = ({ title, boardId, id, onAddCard}: TListHeader) => {
   const { execute, isLoading, fieldErrors } = useAction(updateList, {
     onSuccess: (data) => {
       toast.success(`List renamed.`);
