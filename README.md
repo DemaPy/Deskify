@@ -1,4 +1,4 @@
-Deskify
+<h1 style="font-size: 4rem;">Meet Deskify</h1>
 #### Collaborate, manage projects, and reach new productivity peaks
 
 ## Marketing page
