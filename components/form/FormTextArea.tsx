@@ -14,7 +14,7 @@ type TFormTextArea = {
   required?: boolean;
   disabled?: boolean;
   errors?: Record<string, string[]> | undefined;
-  className?: "string";
+  className?: string;
   onBlur?: () => void;
   onClick?: () => void;
   defaultValue?: string;

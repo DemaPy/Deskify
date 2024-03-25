@@ -5,8 +5,7 @@ import { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
-import { CopyListSchema } from "./schema";
-import { redirect } from "next/navigation";
+import { CopyCardSchema } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -17,7 +16,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  let list;
+  let card;
   try {
     const board = await db.board.findUnique({
       where: {
@@ -30,52 +29,39 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         error: "Board not found",
       };
     }
-    const listCopy = await db.list.findUnique({
+    const cardCopy = await db.cardModel.findUnique({
       where: {
         id: data.id,
-        boardId: data.boardId,
-        board: {
-          orgId: orgId,
+        list: {
+          board: {
+            orgId: orgId,
+          },
         },
-      },
-      include: {
-        cards: true,
       },
     });
 
-    if (!listCopy) {
+    if (!cardCopy) {
       return {
-        error: "List not found",
+        error: "Card not found",
       };
     }
 
-    const lastList = await db.list.findFirst({
+    const lastCard = await db.cardModel.findFirst({
       where: {
-        boardId: data.boardId,
+        listId: cardCopy.listId,
       },
       orderBy: { order: "desc" },
       select: { order: true },
     });
 
-    const newOrder = lastList ? lastList.order + 1 : 0;
+    const newOrder = lastCard ? lastCard.order + 1 : 0;
 
-    list = await db.list.create({
+    card = await db.cardModel.create({
       data: {
-        title: listCopy.title + " Copy",
+        title: cardCopy.title + " Copy",
         order: newOrder,
-        boardId: listCopy.boardId,
-        cards: {
-          createMany: {
-            data: listCopy.cards.map((item) => ({
-              title: item.title,
-              description: item.description,
-              order: item.order,
-            })),
-          },
-        },
-      },
-      include: {
-        cards: true,
+        listId: cardCopy.listId,
+        description: cardCopy.description + " Copy",
       },
     });
   } catch (error) {
@@ -90,7 +76,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   revalidatePath(`/board/${data.boardId}`);
-  return { data: list };
+  return { data: card };
 };
 
-export const copyList = createSafeAction(CopyListSchema, handler);
+export const copyCard = createSafeAction(CopyCardSchema, handler);

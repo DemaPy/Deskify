@@ -12,8 +12,10 @@ export const UpdateCardSchema = z.object({
         message: "Minimum value is 3",
       })
   ),
-  title: z.string().min(3, {
-    message: "Title too short",
-  }),
+  title: z.optional(
+    z.string().min(3, {
+      message: "Title too short",
+    })
+  ),
   boardId: z.string(),
 });

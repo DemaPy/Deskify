@@ -5,7 +5,7 @@ import { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
-import { UpdateCardSchema } from "./schema";
+import { DeleteCardSchema } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -15,13 +15,21 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: "Unauthorized",
     };
   }
+
   let card;
   try {
-    card = await db.cardModel.update({
-      data: {
-        title: data.title,
-        description: data.description,
+    const board = await db.board.findUnique({
+      where: {
+        id: data.boardId,
       },
+    });
+
+    if (!board) {
+      return {
+        error: "Board not found",
+      };
+    }
+    card = await db.cardModel.delete({
       where: {
         id: data.id,
         list: {
@@ -38,11 +46,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       };
     }
     return {
-      error: "Failed to update",
+      error: "Failed to delete",
     };
   }
+
   revalidatePath(`/board/${data.boardId}`);
   return { data: card };
 };
 
-export const updateCard = createSafeAction(UpdateCardSchema, handler);
+export const deleteCard = createSafeAction(DeleteCardSchema, handler);
