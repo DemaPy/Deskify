@@ -1,6 +1,6 @@
 "use client";
 import { CardModel } from "@prisma/client";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import { useCardModal } from "@/hooks/use-card-modal";
 
 type TCardItem = {
@@ -10,7 +10,7 @@ type TCardItem = {
 
 const CardItem = ({ card, idx }: TCardItem) => {
   const cardModal = useCardModal();
-
+  
   return (
     <Draggable draggableId={card.id} index={idx}>
       {(provided) => (
