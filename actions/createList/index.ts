@@ -6,6 +6,7 @@ import { InputType, ReturnType } from "./types";
 import { auth } from "@clerk/nextjs";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { CreateList } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -50,6 +51,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         boardId: boardId,
         order: newOrder,
       },
+    });
+
+    await createAuditLog({
+      action: "CREATE",
+      entityId: list.id,
+      entityTitle: list.title,
+      entityType: "LIST",
     });
   } catch (error) {
     if (error instanceof Error) {

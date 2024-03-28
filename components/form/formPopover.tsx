@@ -32,8 +32,8 @@ const FormPopover = ({ children, align, side, sideOffset }: TFormPopover) => {
       ref.current?.click();
       router.push("/board/" + data.id);
     },
-    onError: () => {
-      toast.error("Board created");
+    onError: (error) => {
+      toast.error(error);
     },
   });
 

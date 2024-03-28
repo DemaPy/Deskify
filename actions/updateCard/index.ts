@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { UpdateCardSchema } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -30,6 +31,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           },
         },
       },
+    });
+
+    await createAuditLog({
+      action: "UPDATE",
+      entityId: card.id,
+      entityTitle: card.title,
+      entityType: "CARD",
     });
   } catch (error) {
     if (error instanceof Error) {

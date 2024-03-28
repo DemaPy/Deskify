@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { DeleteListSchema } from "./schema";
 import { redirect } from "next/navigation";
+import { createAuditLog } from "@/lib/create-audit-log";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -38,6 +39,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           orgId: orgId,
         },
       },
+    });
+
+    await createAuditLog({
+      action: "DELETE",
+      entityId: list.id,
+      entityTitle: list.title,
+      entityType: "LIST",
     });
   } catch (error) {
     if (error instanceof Error) {

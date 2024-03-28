@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { DeleteBoardSchema } from "./schema";
 import { redirect } from "next/navigation";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { decrementAvailableCount } from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -25,6 +27,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         orgId: orgId,
       },
     });
+
+    await createAuditLog({
+      action: "DELETE",
+      entityId: board.id,
+      entityTitle: board.title,
+      entityType: "BOARD",
+    });
+
+    await decrementAvailableCount();
   } catch (error) {
     if (error instanceof Error) {
       return {
