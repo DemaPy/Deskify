@@ -18,7 +18,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   let cards;
   let list;
-  console.log(data);
   
   try {
     list = await db.list.findUnique({

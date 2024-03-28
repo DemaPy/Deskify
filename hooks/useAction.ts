@@ -26,8 +26,6 @@ export const useAction = <TInput, TOutput>(
   const execute = useCallback(
     async (input: TInput) => {
       setIsLoading(true);
-      setFieldErrors(undefined);
-      setError(undefined);
 
       try {
         const result = await action(input);
@@ -36,9 +34,7 @@ export const useAction = <TInput, TOutput>(
           return;
         }
 
-        if (result.fieldErrors) {
-          setFieldErrors(result.fieldErrors);
-        }
+        setFieldErrors(result.fieldErrors);
 
         if (result.error) {
           setError(result.error);
@@ -49,6 +45,8 @@ export const useAction = <TInput, TOutput>(
           setData(result.data);
           options.onSuccess?.(result.data);
         }
+      } catch (err) {
+        console.error(err);
       } finally {
         setIsLoading(false);
         options.onComplete?.();

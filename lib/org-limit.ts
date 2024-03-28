@@ -100,7 +100,6 @@ export const getAvailableCount = async () => {
     where: { orgId },
   });
 
-  console.log(orgLimit);
 
   if (!orgLimit) {
     return 0;

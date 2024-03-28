@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MAX_BOARDS } from "@/constance/boards";
 import { db } from "@/lib/db";
 import { getAvailableCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs";
 import { HelpCircle, User } from "lucide-react";
 import Link from "next/link";
@@ -26,8 +27,8 @@ const BoardList = async () => {
   });
 
   const avCount = await getAvailableCount();
-  console.log(avCount);
-  
+  const isPro = await checkSubscription();
+
   return (
     <div className="space-y-4 ">
       <div className="flex items-center font-semibold text-lg text-neutral-700">
@@ -51,7 +52,11 @@ const BoardList = async () => {
         <FormPopover sideOffset={10} side="right">
           <div className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition text-neutral-700">
             <p className="text-sm">Create new board</p>
-            <span className="text-xs">{MAX_BOARDS - avCount} remaining</span>
+            {isPro ? (
+              <span className="text-xs">Unlimited</span>
+            ) : (
+              <span className="text-xs">{MAX_BOARDS - avCount} remaining</span>
+            )}
             <Hint
               description={`Free WorkSpaces can have up to 5 open boards. For unlimited boards upgrade to pro.`}
               sideOffset={50}

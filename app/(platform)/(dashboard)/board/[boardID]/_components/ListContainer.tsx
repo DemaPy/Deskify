@@ -35,8 +35,6 @@ const ListContainer = ({ boardId, data }: ListContainer) => {
   const [lists, setLists] = useState(data);
   const { execute: reorderCard } = useAction(updateСardOrder, {
     onSuccess: (data) => {
-      console.log(data);
-
       toast.success("Card reordered succesfully");
     },
     onError: (err) => {
@@ -45,8 +43,6 @@ const ListContainer = ({ boardId, data }: ListContainer) => {
   });
   const { execute: reorderList } = useAction(updateListOrder, {
     onSuccess: (data) => {
-      console.log(data);
-
       toast.success("Lists reordered succesfully");
     },
     onError: (err) => {

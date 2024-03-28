@@ -8,6 +8,7 @@ import { createSafeAction } from "@/lib/createSafeAction";
 import { CreateBoard } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { hasAvailableCount, incrementAvailableCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -19,8 +20,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const canCreateBoard = await hasAvailableCount();
-
-
+  const isPro = await checkSubscription();
 
   const { title, image } = data;
 
@@ -41,7 +41,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   let board;
   try {
-    if (!canCreateBoard) {
+    if (!canCreateBoard && !isPro) {
       throw new Error(
         "You have reached limit of five boards. Please, consider update to pro plan."
       );
@@ -57,15 +57,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         orgId,
       },
     });
-
+    if (!isPro) {
+      await incrementAvailableCount();
+    }
     await createAuditLog({
       action: "CREATE",
       entityId: board.id,
       entityTitle: board.title,
       entityType: "BOARD",
     });
-
-    await incrementAvailableCount();
   } catch (error) {
     if (error instanceof Error) {
       return {

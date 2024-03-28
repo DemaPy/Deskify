@@ -1,14 +1,18 @@
 "use client";
 
 import { useOrganization } from "@clerk/nextjs";
-import { CreditCard } from "lucide-react";
+import { CreditCard, LoaderCircle } from "lucide-react";
 import Image from "next/image";
 
-const Info = () => {
+const Info = ({ isPro }: { isPro: boolean }) => {
   const { organization, isLoaded } = useOrganization();
 
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return (
+      <p className="text-xl text-muted-foreground">
+        <LoaderCircle className="animate-spin w-6 h-6 mr-2" /> Loading...
+      </p>
+    );
   }
 
   return (
@@ -24,7 +28,7 @@ const Info = () => {
       <div className="space-y-1">
         <p className="font-semibold text-xl">{organization?.name}</p>
         <div className="flex items-center text-xs text-muted-foreground">
-          <CreditCard className="h-4 w-4 mr-2" /> Free
+          <CreditCard className="h-4 w-4 mr-2" /> {isPro ? "Pro" : "Free"}
         </div>
       </div>
     </div>
