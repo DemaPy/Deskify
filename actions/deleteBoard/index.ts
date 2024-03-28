@@ -9,6 +9,7 @@ import { DeleteBoardSchema } from "./schema";
 import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { decrementAvailableCount } from "@/lib/org-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -18,6 +19,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: "Unauthorized",
     };
   }
+
+  const isPro = await checkSubscription();
 
   let board;
   try {
@@ -35,7 +38,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityType: "BOARD",
     });
 
-    await decrementAvailableCount();
+    if (!isPro) {
+      await decrementAvailableCount();
+    }
   } catch (error) {
     if (error instanceof Error) {
       return {
