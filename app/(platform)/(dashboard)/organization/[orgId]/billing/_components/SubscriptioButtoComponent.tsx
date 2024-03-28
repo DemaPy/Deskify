@@ -1,3 +1,5 @@
+"use client"
+
 import { stripeRedirect } from "@/actions/stripeRedirection";
 import { Button } from "@/components/ui/button";
 import { useProModal } from "@/hooks/use-pro-modal";
